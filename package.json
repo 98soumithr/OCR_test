@@ -1,0 +1,34 @@
+{
+  "name": "formpilot",
+  "version": "1.0.0",
+  "description": "Chrome extension + local Python service for PDF form autofill",
+  "private": true,
+  "workspaces": [
+    "extension",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:extension\"",
+    "dev:backend": "cd backend && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:extension": "cd extension && npm run dev",
+    "build": "npm run build:shared && npm run build:extension && npm run build:backend",
+    "build:shared": "cd shared && npm run build",
+    "build:extension": "cd extension && npm run build",
+    "build:backend": "cd backend && pip install -r requirements.txt",
+    "test": "npm run test:extension && npm run test:backend",
+    "test:extension": "cd extension && npm run test",
+    "test:backend": "cd backend && pytest",
+    "lint": "npm run lint:extension && npm run lint:backend",
+    "lint:extension": "cd extension && npm run lint",
+    "lint:backend": "cd backend && flake8 .",
+    "clean": "rm -rf node_modules extension/node_modules shared/node_modules backend/__pycache__ backend/.pytest_cache"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "@types/node": "^20.10.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
