@@ -131,5 +131,13 @@ export function overlayBadges(mapping: Record<string, { confidence: number }>) {
 chrome.runtime.onMessage.addListener((msg: Message, _sender, sendResponse) => {
   if (msg.type === 'PING') sendResponse({ ok: true });
   if (msg.type === 'SCAN_PAGE') sendResponse(scanPage());
+  if (msg.type === 'FILL_FIELDS') {
+    fillFields(msg.payload.mapping);
+    sendResponse({ ok: true });
+  }
+  if (msg.type === 'OVERLAY_BADGES') {
+    overlayBadges(msg.payload as any);
+    sendResponse({ ok: true });
+  }
 });
 

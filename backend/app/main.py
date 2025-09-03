@@ -54,6 +54,35 @@ class ParsedResponseModel(BaseModel):
     meta: dict
 
 
+class InputMetaModel(BaseModel):
+    tag: str
+    selector: str
+    labelText: str | None = None
+    placeholder: str | None = None
+    ariaLabel: str | None = None
+    name: str | None = None
+    id: str | None = None
+
+
+class MatchRequestModel(BaseModel):
+    fields: List[FieldModel]
+    inputs: List[InputMetaModel]
+
+
+class MatchItemModel(BaseModel):
+    selector: str
+    canonical: str
+    value: str
+    confidence: float
+    source: dict
+
+
+class MatchResponseModel(BaseModel):
+    high: List[MatchItemModel]
+    medium: List[MatchItemModel]
+    low: List[MatchItemModel]
+
+
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
@@ -121,6 +150,13 @@ async def provider_textract_info():
     if not os.environ.get("AWS_ACCESS_KEY_ID"):
         raise HTTPException(status_code=400, detail="AWS Textract not configured")
     return JSONResponse({"status": "ok", "note": "stub"})
+
+
+@app.post("/match", response_model=MatchResponseModel)
+async def match_fields(body: MatchRequestModel):
+    from .pipeline.match import match_fields_to_inputs  # type: ignore
+    result = match_fields_to_inputs(fields=[f.model_dump() for f in body.fields], inputs=[i.model_dump() for i in body.inputs])
+    return result
 
 
 @app.get("/providers/azure")
