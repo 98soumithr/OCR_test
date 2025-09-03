@@ -1,0 +1,18 @@
+{
+  "name": "formpilot-monorepo",
+  "private": true,
+  "workspaces": ["extension"],
+  "scripts": {
+    "dev": "concurrently -k -n BACKEND,EXT \"bash backend/scripts/dev.sh\" \"npm --prefix extension run dev\"",
+    "dev:backend": "bash backend/scripts/dev.sh",
+    "dev:ext": "npm --prefix extension run dev",
+    "test": "npm run test:backend && npm run test:extension",
+    "test:backend": "pytest -q",
+    "test:extension": "playwright test",
+    "build": "npm --prefix extension run build",
+    "lint": "echo 'Add linters if needed'"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
