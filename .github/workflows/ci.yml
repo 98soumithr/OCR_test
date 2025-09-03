@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: |
+        cd backend
+        pytest tests/ -v --cov=. --cov-report=xml
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage.xml
+        flags: backend
+        name: backend-coverage
+
+  test-extension:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm install
+        cd shared && npm install && cd ..
+        cd extension && npm install && cd ..
+    
+    - name: Build shared types
+      run: |
+        cd shared && npm run build && cd ..
+    
+    - name: Build extension
+      run: |
+        cd extension && npm run build && cd ..
+    
+    - name: Run extension tests
+      run: |
+        cd extension && npm test && cd ..
+    
+    - name: Lint extension
+      run: |
+        cd extension && npm run lint && cd ..
+
+  test-e2e:
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-extension]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm install
+        cd shared && npm install && cd ..
+        cd extension && npm install && cd ..
+    
+    - name: Install Playwright
+      run: |
+        cd tests && npx playwright install && cd ..
+    
+    - name: Build project
+      run: |
+        cd shared && npm run build && cd ..
+        cd extension && npm run build && cd ..
+    
+    - name: Run Playwright tests
+      run: |
+        cd tests && npx playwright test && cd ..
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: tests/playwright-report/
+        retention-days: 30
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-extension]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        npm install
+        cd shared && npm install && cd ..
+        cd extension && npm install && cd ..
+        cd backend && pip install -r requirements.txt && cd ..
+    
+    - name: Build project
+      run: |
+        ./scripts/build.sh
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+          extension/dist/
+          backend/
+          shared/dist/
+        retention-days: 30
