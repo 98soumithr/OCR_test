@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS variables */
+:root {
+  --formpilot-primary: #3b82f6;
+  --formpilot-success: #22c55e;
+  --formpilot-warning: #f59e0b;
+  --formpilot-error: #ef4444;
+  --formpilot-gray-50: #f9fafb;
+  --formpilot-gray-100: #f3f4f6;
+  --formpilot-gray-200: #e5e7eb;
+  --formpilot-gray-500: #6b7280;
+  --formpilot-gray-700: #374151;
+  --formpilot-gray-900: #111827;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--formpilot-gray-50);
+  color: var(--formpilot-gray-900);
+  line-height: 1.5;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--formpilot-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--formpilot-gray-500);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--formpilot-gray-700);
+}
+
+/* Custom component styles */
+.formpilot-card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-4;
+}
+
+.formpilot-button {
+  @apply px-4 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.formpilot-button-primary {
+  @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+}
+
+.formpilot-button-secondary {
+  @apply bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500;
+}
+
+.formpilot-button-success {
+  @apply bg-success-600 text-white hover:bg-success-700 focus:ring-success-500;
+}
+
+.formpilot-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+}
+
+.formpilot-badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.formpilot-badge-high {
+  @apply bg-success-100 text-success-800;
+}
+
+.formpilot-badge-medium {
+  @apply bg-warning-100 text-warning-800;
+}
+
+.formpilot-badge-low {
+  @apply bg-error-100 text-error-800;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.formpilot-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.formpilot-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Drag and drop styles */
+.formpilot-drag-over {
+  @apply border-primary-500 border-dashed bg-primary-50;
+}
+
+.formpilot-dragging {
+  @apply opacity-50 cursor-grabbing;
+}
+
+/* Tooltip styles */
+.formpilot-tooltip {
+  @apply absolute z-50 px-2 py-1 text-sm text-white bg-gray-900 rounded shadow-lg pointer-events-none;
+}
+
+/* PDF viewer styles */
+.formpilot-pdf-viewer {
+  @apply relative overflow-auto bg-gray-100 border border-gray-300 rounded;
+}
+
+.formpilot-pdf-page {
+  @apply mx-auto my-4 shadow-lg;
+}
+
+.formpilot-field-highlight {
+  @apply absolute border-2 border-primary-500 bg-primary-500 bg-opacity-20 pointer-events-none;
+}

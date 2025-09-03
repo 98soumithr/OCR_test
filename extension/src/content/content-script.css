@@ -1,0 +1,47 @@
+/* FormPilot Content Script Styles */
+
+.formpilot-badge {
+  font-family: system-ui, -apple-system, sans-serif !important;
+  pointer-events: auto !important;
+  user-select: none !important;
+  transition: transform 0.2s ease !important;
+}
+
+.formpilot-badge:hover {
+  transform: scale(1.1) !important;
+}
+
+.formpilot-highlight {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+  transition: outline 0.2s ease !important;
+}
+
+.formpilot-provenance {
+  font-family: system-ui, -apple-system, sans-serif !important;
+  z-index: 2147483647 !important; /* Maximum z-index */
+}
+
+/* Ensure badges don't interfere with page layout */
+.formpilot-badge,
+.formpilot-provenance {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Animation for badge appearance */
+@keyframes formpilot-badge-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.formpilot-badge {
+  animation: formpilot-badge-appear 0.3s ease-out !important;
+}

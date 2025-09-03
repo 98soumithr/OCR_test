@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  formpilot:
+    build: .
+    ports:
+      - "8000:8000"  # Backend API
+      - "3000:3000"  # Extension dev server (if needed)
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/backend/venv
+    environment:
+      - DEBUG=true
+      - HOST=0.0.0.0
+      - PORT=8000
+    command: npm run dev
+    
+  # Optional: Redis for caching (future enhancement)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"

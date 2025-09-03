@@ -1,0 +1,15 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Document background -->
+  <rect x="20" y="16" width="88" height="96" rx="4" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+  
+  <!-- Folded corner -->
+  <polygon points="92,16 108,32 92,32" fill="#1d4ed8"/>
+  
+  <!-- Form lines -->
+  <line x1="32" y1="40" x2="96" y2="40" stroke="white" stroke-width="2"/>
+  <line x1="32" y1="56" x2="96" y2="56" stroke="white" stroke-width="2"/>
+  <line x1="32" y1="72" x2="96" y2="72" stroke="white" stroke-width="2"/>
+  
+  <!-- Checkmark -->
+  <path d="M75 85 L82 92 L95 75" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
