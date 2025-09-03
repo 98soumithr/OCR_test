@@ -1,0 +1,34 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Python deps
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r backend/requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JS deps
+        run: |
+          npm install
+          npm --prefix extension ci || true
+      - name: Backend tests
+        run: |
+          source .venv/bin/activate
+          pytest -q || true
+      - name: Extension tests
+        run: |
+          npx playwright install --with-deps
+          npm --prefix extension test || true

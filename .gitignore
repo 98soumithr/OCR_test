@@ -1,0 +1,1 @@
+.venv/\n__pycache__/\nnode_modules/\ndist/\n*.log\n.playwright/\ncoverage/\n.DS_Store\n.env\n.env.local\n.cache/\n

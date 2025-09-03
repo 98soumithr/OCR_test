@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "FormPilot",
+  "version": "0.1.0",
+  "description": "Extract values from PDFs and autofill web forms with provenance and confidence.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "src/sidebar/index.html"
+  },
+  "action": {
+    "default_title": "FormPilot"
+  }
+}
